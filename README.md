@@ -63,7 +63,7 @@ debug:
   with:
     url: 'https://hook.example.com' or ${{ secrets.WEBHOOK_URL }}
     method: POST
-	payload: "{\"test\": \"value\", \"other\": 123}"
+    payload: "{\"test\": \"value\", \"other\": 123}"
 ```
 
 ### GET with x-www-form-urlencoded data
@@ -75,7 +75,7 @@ debug:
   with:
     url: 'https://hook.example.com' or ${{ secrets.WEBHOOK_URL }}
     method: GET
-	payload: "test=value&other=123"
+    payload: "test=value&other=123"
 ```
 
 ### POST with JSON data and signature
@@ -87,9 +87,9 @@ debug:
   with:
     url: 'https://hook.example.com' or ${{ secrets.WEBHOOK_URL }}
     method: POST
-	payload: "{\"test\": \"value\", \"other\": 123}"
-	signature_enabled: true
-	signature_header: X-Hub-Signature
-	signature_method: HMAC-SHA256
-	signature_secret: SOME-secure_password-1234
+    payload: "{\"test\": \"value\", \"other\": 123}"
+    signature_enabled: true
+    signature_header: X-Hub-Signature
+    signature_method: HMAC-SHA256
+    signature_secret: SOME-secure_password-1234
 ```
