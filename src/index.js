@@ -138,7 +138,7 @@ async function run() {
 			method: inputs.method,
 			headers: headers,
 		};
-		if (inputs.method === "POST") request.data = JSON.stringify(inputs.payload);
+		if (inputs.method === "POST") request.data = inputs.payload;
 
 		if (inputs.debug) {
 			core.info("");
