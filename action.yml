@@ -1,0 +1,49 @@
+name: webhook_action
+
+description: Send Github/Gitea Action calls to any Webhook.
+
+branding:
+  icon: "globe"
+  color: "orange"
+
+inputs:
+  url:
+    description: "Url to send the request"
+    required: true
+    default: ""
+  method:
+    description: "HTTP Method to use when calling the Webhook, supports GET or POST"
+    required: true
+    default: "POST"
+  payload:
+    description: "The data to send to the webhook, can be 'application/json' for use with POST and 'x-www-form-urlencoded' for use with GET"
+    required: true
+    default: ""
+  signature_enabled:
+    description: "Enabled generation of the signature header"
+    required: false
+    default: "false"
+  signature_header:
+    description: "Name of the header the signature will be send as"
+    required: false
+    default: "X-Hub-Signature"
+  signature_method:
+    description: "Method to generate the signature, supports HMAC-SHA1, HMAC-SHA256 or HMAC-SHA512"
+    required: false
+    default: "HMAC-SHA256"
+  signature_secret:
+    description: "Secret (password) to use to generate the signature, must match the value in the Webhook system"
+    required: false
+    default: "CHANGE_ME"
+  debug:
+    description: "Prints debug information for dev/troubleshooting"
+    required: false
+    default: "false"
+
+outputs:
+  response:
+    description: "The response of POST request."
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
