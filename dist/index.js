@@ -41391,7 +41391,7 @@ async function run() {
 				core.info(`Payload 4: ${JSON.parse(JSON.stringify(inputs.payload))}`);
 				core.info("");
 			}
-			request.data = JSON.parse(JSON.stringify(inputs.payload));
+			request.data = inputs.payload;
 		}
 
 		if (inputs.debug) {
