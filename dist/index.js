@@ -41382,7 +41382,17 @@ async function run() {
 			method: inputs.method,
 			headers: headers,
 		};
-		if (inputs.method === "POST") request.data = JSON.stringify(inputs.payload);
+		if (inputs.method === "POST") {
+			if (inputs.debug) {
+				core.info("");
+				core.info(`Payload 1: ${inputs.payload}`);
+				core.info(`Payload 2: ${JSON.stringify(inputs.payload)}`);
+				core.info(`Payload 3: ${JSON.parse(inputs.payload)}`);
+				core.info(`Payload 4: ${JSON.parse(JSON.stringify(inputs.payload))}`);
+				core.info("");
+			}
+			request.data = JSON.parse(JSON.stringify(inputs.payload));
+		}
 
 		if (inputs.debug) {
 			core.info("");
