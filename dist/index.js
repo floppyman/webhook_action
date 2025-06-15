@@ -41284,57 +41284,12 @@ function getInputs() {
 }
 
 function generateSignature(secret, payload, alg) {
-	// const key = new Buffer(secret, "hex");
 	return crypto.createHmac(alg, secret).update(payload).digest("hex");
 }
 
-// async function generateHMAC_SHA1(key, message) {
-// 	// Encode the key and message as UTF-8
-// 	const encoder = new TextEncoder();
-// 	const encodedKey = encoder.encode(key);
-// 	const encodedMessage = encoder.encode(message);
-// 	// Import the key for HMAC
-// 	const cryptoKey = await crypto.subtle.importKey("raw", encodedKey, { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
-// 	// Generate the HMAC
-// 	const signature = await crypto.subtle.sign("HMAC", cryptoKey, encodedMessage);
-// 	// Convert the signature to a hex string
-// 	return Array.from(new Uint8Array(signature))
-// 		.map((b) => ("00" + b.toString(16)).slice(-2))
-// 		.join("");
-// }
-
-// async function generateHMAC_SHA256(key, message) {
-// 	// Encode the key and message as UTF-8
-// 	const encoder = new TextEncoder();
-// 	const encodedKey = encoder.encode(key);
-// 	const encodedMessage = encoder.encode(message);
-// 	// Import the key for HMAC
-// 	const cryptoKey = await crypto.subtle.importKey("raw", encodedKey, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-// 	// Generate the HMAC
-// 	const signature = await crypto.subtle.sign("HMAC", cryptoKey, encodedMessage);
-// 	// Convert the signature to a hex string
-// 	return Array.from(new Uint8Array(signature))
-// 		.map((b) => ("00" + b.toString(16)).slice(-2))
-// 		.join("");
-// }
-
-// async function generateHMAC_SHA512(key, message) {
-// 	// Encode the key and message as UTF-8
-// 	const encoder = new TextEncoder();
-// 	const encodedKey = encoder.encode(key);
-// 	const encodedMessage = encoder.encode(message);
-// 	// Import the key for HMAC
-// 	const cryptoKey = await crypto.subtle.importKey("raw", encodedKey, { name: "HMAC", hash: "SHA-512" }, false, ["sign"]);
-// 	// Generate the HMAC
-// 	const signature = await crypto.subtle.sign("HMAC", cryptoKey, encodedMessage);
-// 	// Convert the signature to a hex string
-// 	return Array.from(new Uint8Array(signature))
-// 		.map((b) => ("00" + b.toString(16)).slice(-2))
-// 		.join("");
-// }
-
 async function run() {
 	let inputs = {};
+	let request = {};
 
 	try {
 		core.info(`Reading inputs ...`);
@@ -41372,40 +41327,23 @@ async function run() {
 		let headers = {};
 		if (inputs.method === "POST") headers["Content-Type"] = "application/json";
 		if (inputs.method === "GET") headers["Content-Type"] = "application/x-www-form-urlencoded";
-		if (inputs.signature_enabled === true) {
-			headers[inputs.signature_header] = inputs.signature;
-		}
+		if (inputs.signature_enabled === true) headers[inputs.signature_header] = inputs.signature;
 
-		if (inputs.method === "GET") inputs.url = inputs.url + "?" + inputs.payload;
+		if (inputs.method === "GET") inputs.url = `${inputs.url}?${inputs.payload}`;
 
-		let request = {
-			method: inputs.method,
-			headers: headers,
-		};
-		if (inputs.method === "POST") {
-			if (inputs.debug) {
-				core.info("");
-				core.info(`Payload 1: ${inputs.payload}`);
-				core.info(`Payload 2: ${JSON.stringify(inputs.payload)}`);
-				core.info(`Payload 3: ${JSON.parse(inputs.payload)}`);
-				core.info(`Payload 4: ${JSON.parse(JSON.stringify(inputs.payload))}`);
-				core.info("");
-			}
-			request.data = inputs.payload;
-		}
+		request.url = inputs.url;
+		request.method = inputs.method;
+		request.headers = headers;
+		if (inputs.method === "POST") request.data = inputs.payload;
 
 		if (inputs.debug) {
 			core.info("");
-			core.info(`URL: ${inputs.url}`);
 			core.info("REQUEST:");
 			core.info(JSON.stringify(request, null, 4));
 			core.info("");
 		}
 
-		const response = await axios({
-			url: inputs.url,
-			...request,
-		});
+		const response = await axios(request);
 
 		if (inputs.debug) {
 			core.info("");
