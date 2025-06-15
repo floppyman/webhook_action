@@ -73,7 +73,12 @@ async function run() {
 		}
 	} catch (error) {
 		core.error("Failed getting action inputs");
-		if (error.response && error.response.data) core.error(JSON.stringify(request, null, 4));
+		if (error.response && error.response.data) {
+			core.error("ERROR.RESPONSE.DATA");
+			core.error(error.response.data);
+			core.error("REQUEST");
+			core.error(JSON.stringify(request, null, 4));
+		}
 		core.setFailed(error.message);
 	}
 
@@ -119,7 +124,12 @@ async function run() {
 		});
 	} catch (error) {
 		core.error("Failed making request to Webhook service");
-		if (error.response && error.response.data) core.error(JSON.stringify(request, null, 4));
+		if (error.response && error.response.data) {
+			core.error("ERROR.RESPONSE.DATA");
+			core.error(error.response.data);
+			core.error("REQUEST");
+			core.error(JSON.stringify(request, null, 4));
+		}
 		core.setFailed(error.message);
 	}
 }
